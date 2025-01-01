@@ -1,0 +1,88 @@
+<header *ngIf="!isSignUpOrSignInPage">
+    <!-- Header Start -->
+    <div class="header-area header-transparent">
+        <div class="main-header ">
+            <div class="header-bottom  header-sticky">
+                <div class="container-fluid">
+                    <div class="row align-items-center justify-items-center">
+                        <!-- Logo -->
+                        <div class="col-xl-2 col-lg-2">
+                          <!-- style="margin-top: 40px;" -->
+                            <div class="logo">
+                                <a href="index.html" ><img src="assets/Homepage/img/logo/logo2.png" style="width: 200px; "  alt=""></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-10 col-lg-10">
+                            <div class="menu-wrapper d-flex align-items-center justify-content-end">
+                                <!-- Main-menu -->
+                                <div class="main-menu d-none d-lg-block">
+                                    <nav>
+                                        <ul id="navigation">                                                                                          
+                                            <li><a routerLink="/" routerLinkActive="active">Home</a></li>
+                                            <li><a routerLink="/about" routerLinkActive="active">About</a></li>
+                                            <li><a routerLink="/faq" routerLinkActive="active">FAQ</a></li>
+                                            <li><a href="#">Blog</a>
+                                                <ul class="submenu">
+                                                    <li><a href="blog.html">Blog</a></li>
+                                                    <li><a href="blog_details.html">Blog Details</a></li>
+                                                    <li><a href="elements.html">Element</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+                                            <!-- Button -->
+                                            <li class="button-header margin-left "><a class="btn" routerLink="/signup" routerLinkActive="active" >Sign Up</a></li>
+                                            <li class="button-header"><a routerLink="/signin" routerLinkActive="active" class="btn3">Sign In</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        
+
+                            <div class="mobile_menu d-block d-lg-none">
+                                <div class="slicknav_menu">
+                                  <a aria-haspopup="true" role="button" tabindex="0" class="slicknav_btn" [ngClass]="{'slicknav_collapsed': isCollapsed, 'slicknav_open': !isCollapsed}" (click)="toggleMenu()" style="outline: none;">
+                                    <span class="slicknav_menutxt">MENU</span>
+                                    <span class="slicknav_icon">
+                                      <span class="slicknav_icon-bar"></span>
+                                      <span class="slicknav_icon-bar"></span>
+                                      <span class="slicknav_icon-bar"></span>
+                                    </span>
+                                  </a>
+                                  <ul class="slicknav_nav" [ngClass]="{'slicknav_hidden': isCollapsed, 'slicknav_open': !isCollapsed}" aria-hidden="true" role="menu">
+                                    <li><a routerLink="/" routerLinkActive="active" role="menuitem" tabindex="-1">Home</a></li>
+                                    <li><a routerLink="/about" routerLinkActive="active" role="menuitem" tabindex="-1">About</a></li>
+                                    <li><a routerLink="/faq" routerLinkActive="active" role="menuitem" tabindex="-1">FAQ</a></li>
+                                    <li class="slicknav_collapsed slicknav_parent">
+                                      <a href="#" role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_item slicknav_row" style="outline: none;">
+                                        <a href="#" tabindex="-1">Blog</a>
+                                        <span class="slicknav_arrow">+</span>
+                                      </a>
+                                      <ul class="submenu slicknav_hidden" role="menu" aria-hidden="true" style="display: none;">
+                                        <li><a href="blog.html" role="menuitem" tabindex="-1">Blog</a></li>
+                                        <li><a href="blog_details.html" role="menuitem" tabindex="-1">Blog Details</a></li>
+                                        <li><a href="elements.html" role="menuitem" tabindex="-1">Element</a></li>
+                                      </ul>
+                                    </li>
+                                    <li><a routerLink="/contact" routerLinkActive="active" role="menuitem" tabindex="-1">Contact</a></li>
+                                    <li class="button-header margin-left "><a routerLink="/signup" routerLinkActive="active" class="btn" role="menuitem" tabindex="-1">Sign Up</a></li>
+                                    <li class="button-header"><a routerLink="/signin" routerLinkActive="active" class="btn3" role="menuitem" tabindex="-1">Sign In</a></li>
+                                  </ul>
+                                </div>
+                              </div>
+                        </div> 
+                        <!-- Mobile Menu After-->
+                        <!-- mobile-menu.component.html -->
+
+  
+                        
+
+
+                        <!-- End -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+</header>
