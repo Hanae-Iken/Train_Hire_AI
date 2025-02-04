@@ -1,20 +1,44 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 # Enumération pour les rôles
 class Role(models.TextChoices):
     ADMIN = 'Admin', 'Administrateur'
     UTILISATEUR = 'Utilisateur', 'Utilisateur'
 
-# Modèle User
-class User(models.Model):
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('The Email field must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        return self.create_user(email, password, **extra_fields)
+
+# Custom User Model
+class User(AbstractBaseUser):
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
-    mdp = models.CharField(max_length=255)
     role = models.CharField(max_length=50, choices=Role.choices)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    last_login = models.DateTimeField(auto_now=True)
 
-    def _str_(self):
-        return f"{self.nomm} {self.prenom} ({self.role})"
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['nom', 'prenom', 'role']
+
+    objects = CustomUserManager()
+
+    def __str__(self):
+        return f"{self.nom} {self.prenom} ({self.role})"
 
 # Modèles hérités de User
 class Administrateur(User):
@@ -42,8 +66,8 @@ class SystemeAI(models.Model):
     nomm = models.CharField(max_length=100)
     version = models.FloatField()
 
-    def _str_(self):
-        return f"{self.nom} (v{self.version})"
+    def __str__(self):
+        return f"{self.nomm} (v{self.version})"
 
 # Modèle Entretien
 class Entretien(models.Model):
@@ -51,16 +75,18 @@ class Entretien(models.Model):
     domaine = models.CharField(max_length=100)
     systeme_ai = models.ForeignKey(SystemeAI, on_delete=models.CASCADE, related_name='entretiens')
 
-    def _str_(self):
+    def __str__(self):
         return f"{self.type} - {self.domaine}"
 
 # Modèle CV
 class CV(models.Model):
-    contenu = models.TextField()
-    systeme_ai = models.ForeignKey(SystemeAI, on_delete=models.CASCADE, related_name='cvs')
+    resume = models.FileField(upload_to='resumes/', null=True, blank=True) 
+    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='cvs', null=True, blank=True)
+    is_selected = models.BooleanField(default=False)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
-    def _str_(self):
-        return f"CV {self.id}"
+    def __str__(self):
+        return f"{self.utilisateur} - {self.resume.name} - {'Selected' if self.is_selected else 'Not Selected'}"
 
 # Modèle Questions
 class Question(models.Model):
@@ -101,4 +127,3 @@ class Rapport(models.Model):
     score_ling = models.FloatField()
     score_comport = models.FloatField()
     suggestion = models.TextField()
-

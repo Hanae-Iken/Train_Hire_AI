@@ -38,7 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'common',
-    'interview_simulation'
+    'interview_simulation',
+    'corsheaders',
+    'resumes',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'authentification'
 ]
 
 MIDDLEWARE = [
@@ -49,7 +54,31 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     'corsheaders.middleware.CorsMiddleware',
 ]
+AUTHENTICATION_BACKENDS = [
+       'django.contrib.auth.backends.ModelBackend',
+       # Add any custom backends here
+ ]
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_AGE = 1209600 
+AUTH_USER_MODEL = 'common.Utilisateur'
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     )
+# }
+
+# AUTH_USER_MODEL = 'common.User'
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000',  # already added by default
+    'http://localhost:8000',
+    'https://127.0.0.1:8000',  # already added by default
+    'https://localhost:8000',
+]
+   
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'django4.urls'
 
@@ -71,7 +100,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django4.wsgi.application'
 
-
+# LOGIN_URL = '/api/signin/'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -107,6 +136,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
 
 
 # Internationalization
