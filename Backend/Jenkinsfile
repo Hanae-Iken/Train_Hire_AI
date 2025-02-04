@@ -1,0 +1,81 @@
+pipeline {
+    agent any
+
+    environment {
+        // Configuration des variables d'environnement
+        PYTHON_VERSION = '3.9'
+
+    }
+
+    stages {
+        stage('Setup') {
+            steps {
+                sh 'python -m venv myenv'
+                sh '.\myenv\Scripts\activate' // sur linux : source venv/bin/activate
+                sh 'pip install --upgrade pip'
+                sh 'pip install -r requirements.txt'
+                sh 'pip install python-dotenv'  // Installer python-dotenv
+
+            }
+        }
+
+        stage('Load .env') {
+            steps {
+                sh '''
+                .\myenv\Scripts\activate
+                python -m dotenv -f .env run echo "Environment variables loaded"
+                '''
+            }
+        }
+
+        stage('Lint') {
+            steps {
+                sh '.\myenv\Scripts\activate'
+                sh 'flake8 .'
+            }
+        }
+
+        // stage('Test') {
+        //     steps {
+        //         sh 'source venv/bin/activate'
+        //         sh 'python manage.py test'
+        //     }
+        // }
+
+        stage('Build') {
+            steps {
+                sh '.\myenv\Scripts\activate'
+                sh 'python manage.py collectstatic --noinput'
+            }
+        }
+
+        /*
+        stage('Deploy') {
+            steps {
+                script {
+                    if (env.BRANCH_NAME == 'main') {
+                        sh 'source venv/bin/activate'
+                        sh 'python manage.py migrate'
+                        sh 'docker build -t your_django_app .'
+                        sh 'docker tag your_django_app your_dockerhub_repo:latest'
+                        sh 'docker push your_dockerhub_repo:latest'
+                        sh 'kubectl apply -f k8s/deployment.yaml'
+                    }
+                }
+            }
+        }
+        */
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo 'Build and test successful!'
+        }
+        failure {
+            echo 'Build or test failed!'
+        }
+    }
+}
