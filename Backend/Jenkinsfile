@@ -20,12 +20,12 @@ pipeline {
         //     }
         // }
 
-        stage('Checkout') {
-            steps {
-                // Récupérer la branche backend
-                git branch: 'backend', url: 'https://github.com/Hanae-Iken/Train_Hire_AI.git'
-            }
-        }
+        // stage('Checkout') {
+        //     steps {
+        //         // Récupérer la branche backend
+        //         git branch: 'backend', url: 'https://github.com/Hanae-Iken/Train_Hire_AI.git'
+        //     }
+        // }
 
 
          stage('Setup') {
