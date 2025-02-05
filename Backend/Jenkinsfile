@@ -31,6 +31,12 @@ pipeline {
         }
         stage('Install dependencies') {
             steps {
+                 // Affiche le répertoire courant pour vérifier où Jenkins travaille
+                    sh 'pwd'
+                    
+                    // Liste les fichiers dans le répertoire courant pour confirmer la présence de requirements.txt
+                    sh 'ls -la'
+                    
                 sh '''
                     . myenv/bin/activate
                     pip install -r requirements.txt
