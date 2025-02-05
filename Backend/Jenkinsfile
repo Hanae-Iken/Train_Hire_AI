@@ -20,17 +20,31 @@ pipeline {
         //     }
         // }
 
+        stage('Checkout') {
+            steps {
+                // Récupérer la branche backend
+                git branch: 'backend', url: 'https://github.com/Hanae-Iken/Train_Hire_AI.git'
+            }
+        }
+
+
          stage('Setup') {
             steps {
+                // Aller dans le dossier Backend
+                dir('Backend') {
                 sh '''
                     python3 -m venv myenv
                     . myenv/bin/activate
                     pip install --upgrade pip
                 '''
+                }
+
             }
         }
         stage('Install dependencies') {
             steps {
+                // Aller dans le dossier Backend
+                dir('Backend') {
                  // Affiche le répertoire courant pour vérifier où Jenkins travaille
                     sh 'pwd'
                     
@@ -41,6 +55,7 @@ pipeline {
                     . myenv/bin/activate
                     pip install -r requirements.txt
                 '''
+                }
             }
         }
 
