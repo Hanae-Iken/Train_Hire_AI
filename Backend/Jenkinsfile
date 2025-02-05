@@ -22,7 +22,7 @@ pipeline {
         stage('Load .env') {
             steps {
                 sh '''
-                .\myenv\Scripts\activate
+                source venv/bin/activate
                 python -m dotenv -f .env run echo "Environment variables loaded"
                 '''
             }
@@ -30,7 +30,7 @@ pipeline {
 
         stage('Lint') {
             steps {
-                sh '.\myenv\Scripts\activate'
+                sh 'source venv/bin/activate'
                 sh 'flake8 .'
             }
         }
@@ -44,7 +44,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh '.\myenv\Scripts\activate'
+                sh 'source venv/bin/activate'
                 sh 'python manage.py collectstatic --noinput'
             }
         }
