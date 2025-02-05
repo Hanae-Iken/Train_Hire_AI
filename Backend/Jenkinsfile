@@ -8,15 +8,33 @@ pipeline {
     }
 
     stages {
-        stage('Setup') {
-            steps {
-                sh 'python3 -m venv myenv'
-                sh '. myenv/bin/activate' // sur linux : source venv/bin/activate , sur windows : .\myenv\Scripts\activate
-                sh 'python3 -m ensurepip --upgrade'
-                sh 'pip install --upgrade pip'
-                sh 'pip install -r requirements.txt'
-                sh 'pip install python-dotenv'  // Installer python-dotenv
+        // stage('Setup') {
+        //     steps {
+        //         sh 'python3 -m venv myenv'
+        //         sh '. myenv/bin/activate' // sur linux : source venv/bin/activate , sur windows : .\myenv\Scripts\activate
+        //         sh 'python3 -m ensurepip --upgrade'
+        //         sh 'pip install --upgrade pip'
+        //         sh 'pip install -r requirements.txt'
+        //         sh 'pip install python-dotenv'  // Installer python-dotenv
 
+        //     }
+        // }
+
+         stage('Setup') {
+            steps {
+                sh '''
+                    python3 -m venv myenv
+                    . myenv/bin/activate
+                    pip install --upgrade pip
+                '''
+            }
+        }
+        stage('Install dependencies') {
+            steps {
+                sh '''
+                    . myenv/bin/activate
+                    pip install -r requirements.txt
+                '''
             }
         }
 
