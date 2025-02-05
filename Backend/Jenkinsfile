@@ -9,8 +9,8 @@ pipeline {
 
     stages {
         stage('Setup') {
-            steps {
-                sh 'python -m venv myenv'
+            steps {`
+                sh 'python3 -m venv myenv'
                 sh 'source venv/bin/activate' // sur linux : source venv/bin/activate , sur windows : .\myenv\Scripts\activate
                 sh 'pip install --upgrade pip'
                 sh 'pip install -r requirements.txt'
