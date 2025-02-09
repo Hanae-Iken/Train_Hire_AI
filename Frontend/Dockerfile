@@ -1,35 +1,38 @@
-# FROM node:alpine
+# Étape 1 : Construire l'application Angular
+FROM node:18 AS build
 
-# WORKDIR /usr/src/app
+# Définir le répertoire de travail
+WORKDIR /app
 
-# COPY . /usr/src/app
+# Copier uniquement les fichiers package.json et package-lock.json
+COPY package.json package-lock.json ./
 
-# RUN npm install -g @angular/cli
+# Installer les dépendances avec --legacy-peer-deps
+RUN npm install --legacy-peer-deps
 
-# RUN npm install
-
-# CMD ["ng", "serve", "--host", "0.0.0.0"]
-
-# Utilisation de l'image officielle Node.js 18.20.5 avec Alpine pour un conteneur léger
-FROM node:18.20.5-alpine
-
-# Définir le répertoire de travail dans le conteneur
-WORKDIR /usr/src/app
-
-# Copier le fichier package.json et package-lock.json pour installer les dépendances
-COPY package*.json ./
-
-# Installer les dépendances du projet Angular
-RUN npm install
-
-# Copier tout le code source dans le conteneur
+# Copier tout le code source après l’installation des dépendances
 COPY . .
 
-# Installer Angular CLI globalement dans le conteneur
-RUN npm install -g @angular/cli
+# Construire l'application Angular en mode production
+RUN npm run build --configuration production --project=Angular7
 
-# Exposer le port 4200 (port par défaut pour Angular)
-EXPOSE 4200
+# Étape 2 : Servir l'application avec Nginx
+FROM nginx:alpine
 
-# Lancer le serveur Angular (ng serve) sur le port 4200
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+# Définir le répertoire de travail
+WORKDIR /usr/share/nginx/html
+
+# Supprimer les fichiers HTML par défaut de Nginx
+RUN rm -rf ./*
+
+# Copier les fichiers générés depuis l'étape de build
+COPY --from=build /app/dist/angular7 ./ 
+
+# Copier le fichier de configuration Nginx (s'il existe)
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Exposer le port 80
+EXPOSE 80
+
+# Lancer Nginx
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
