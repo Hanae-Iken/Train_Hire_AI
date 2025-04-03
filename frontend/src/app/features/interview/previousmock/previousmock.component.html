@@ -1,0 +1,16 @@
+<div class="previous-interviews-container">
+  <h2>Previous Mock Interviews</h2>
+  <div *ngIf="previousInterviews.length > 0; else noInterviews" class="interview-list">
+    <div *ngFor="let interview of previousInterviews" class="interview-card">
+      <h3>{{ interview.title }}</h3>
+      <p><strong>Domain:</strong> {{ interview.domain }}</p>
+      <p><strong>Date:</strong> {{ interview.created_at }}</p>
+      <button (click)="navigateToFeedback(interview.session_id)" class="feedback-button">
+        View Feedback
+      </button>
+    </div>
+  </div>
+  <ng-template #noInterviews>
+    <p class="no-interviews-message">No previous interviews found.</p>
+  </ng-template>
+</div>

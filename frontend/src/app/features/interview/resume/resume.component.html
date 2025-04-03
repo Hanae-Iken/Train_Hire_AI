@@ -1,0 +1,61 @@
+<div class="mt-20 ml-16 mr-16">
+  
+  <label for="file-upload" class="mb-20 text-lg bg-indigo-800 hover:bg-indigo-950 cursor-pointer inline-flex items-center justify-center py-2 px-4 rounded text-white">
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      class="text-xl mr-2"
+    >
+      <path
+        stroke-width="2"
+        stroke="#fffffff"
+        d="M13.5 3H12H8C6.34315 3 5 4.34315 5 6V18C5 19.6569 6.34315 21 8 21H11M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V11.8125"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+      ></path>
+      <path
+        stroke-linejoin="round"
+        stroke-linecap="round"
+        stroke-width="2"
+        stroke="#fffffff"
+        d="M17 15V18M17 21V18M17 18H14M17 18H20"
+      ></path>
+    </svg>
+    Upload CV
+  </label>
+  <input id="file-upload" type="file" class="hidden" (change)="onFileChange($event)"/>
+
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <table class="w-full text-xl text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead class="text-xl text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+              <th scope="col" class="px-6 py-3">
+                  File name
+              </th>
+              <th scope="col" class="px-6 py-3">
+                  Upload Date
+              </th>
+              <th scope="col" class="px-6 py-3">
+                  Actions
+              </th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let resume of resumes">
+          <td class="px-6 py-4">{{ resume.resume }}</td>
+          <td class="px-6 py-4">{{ resume.uploaded_at | date:'short' }}</td>
+          <td class="px-6 py-4">
+            <button (click)="viewResume(resume.id)" class="text-blue-500 hover:text-blue-700">View</button>
+            <button (click)="deleteResume(resume.id)" class="text-red-500 hover:text-red-700 ml-4">Delete</button>
+          </td>
+        </tr>  
+      </tbody>
+  </table>
+</div>
+
+</div>

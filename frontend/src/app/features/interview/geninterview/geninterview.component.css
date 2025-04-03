@@ -1,0 +1,54 @@
+.container {
+    text-align: center;
+    background: white;
+    border-radius: 10px;
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
+    padding: 20px;
+    width: 90%;
+    max-width: 800px; /* Increased max-width for more space */
+    margin: auto;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.products {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+}
+
+.product {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    flex: 1; /* Flex grow */
+    margin: 15px;
+    padding: 20px;  
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background :white;
+    /* background: #f1f1f1; */
+    transition: background 0.3s;
+    min-width: 250px; /* Prevents the product from getting too small */
+}
+
+.product:hover {
+    background: whitesmoke;
+    cursor: pointer;
+}
+
+.button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: #3E1040;
+    color: white;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.button:hover {
+    background: rgba(62, 16, 64, 0.8); 
+}

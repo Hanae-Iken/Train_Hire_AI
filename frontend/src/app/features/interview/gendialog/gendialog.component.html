@@ -1,0 +1,72 @@
+<div class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 sm:p-6" *ngIf="isVisible">
+    <div class="relative bg-white rounded-lg shadow-md dark:bg-gray-700 w-full max-w-xl sm:max-w-4xl max-h-[90vh] overflow-hidden">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between p-4 sm:p-6 border-b rounded-t dark:border-gray-600 border-gray-200">
+            <h1 class="sm:text-xl font-semibold text-gray-900 dark:text-white">
+                 Start generalized interview
+            </h1>
+            <button (click)="closeModal()" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-10 h-10 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+        </div>
+
+        <!-- Modal body -->
+        <form (ngSubmit)="startInterview()" class="p-4 sm:p-6 overflow-y-auto hide-scrollbar" style="max-height: 60vh;" method="post">
+            <div class="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2">
+                <!-- Combined Resume Section -->
+                <div class="col-span-2">
+                    <label for="resume" class="block mb-2 text-xl font-medium text-gray-900 dark:text-white">Resume</label>
+                    <div class="flex gap-4">
+                        <div class="flex-1">
+                            <select [(ngModel)]="selectedResume" id="existingResume" name="selected_resume"  class="block w-full text-xl text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600 dark:bg-gray-600 dark:border-gray-500 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 py-4">
+                                <option value="">Select an Existing Resume</option>
+                                <option *ngFor="let resume of existingResumes" [value]="resume.id">{{ resume.resume }}</option>
+                            </select>
+                        </div>
+                        <p>Or</p>
+                        <div class="flex-1">
+                            <input (change)="onFileChange($event)"  type="file" id="resume" name="resume" class="block w-full text-xl text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600 dark:bg-gray-600 dark:border-gray-500 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200" accept=".pdf, .doc, .docx">
+                        </div>
+                    </div>
+                </div>
+
+                
+
+
+                <!-- Niveau and Langue de l'interview (same line) -->
+                <div class="flex gap-4 sm:gap-6 col-span-2">
+                    <div class="flex-1">
+                        <label for="category" class="block mb-2 text-xl font-medium text-gray-900 dark:text-white">Niveau de l'interview</label>
+                        <select [(ngModel)]="level" id="category" class="bg-gray-50 border border-gray-300 text-xl rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-3 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+                            <option selected>Facile</option>
+                            <option value="TV">Intermédiaire</option>
+                            <option value="PC">Difficile</option>
+                        </select>
+                    </div>
+                    <div class="flex-1">
+                        <label for="language" class="block mb-2 text-xl font-medium text-gray-900 dark:text-white">Langue de l'interview</label>
+                        <select [(ngModel)]="language" id="language" name="language" class="bg-gray-50 border border-gray-300 text-xl rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-3 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+                            <option value="English">English</option>
+                            <option value="French">French</option>
+                        </select>
+                    </div>
+                </div>
+
+                 
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-full sm:w-auto mt-4 sm:mt-6 text-white inline-flex items-center bg-violet-950 hover:bg-violet-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl px-6 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                
+                <span *ngIf="!isLoading">Start Interview</span>
+                <span *ngIf="isLoading" class="flex items-center">
+                <span>Start Interview</span>
+                <span class="loader ml-2"></span>
+                </span>
+            </button>
+        </form>
+    </div>
+</div>

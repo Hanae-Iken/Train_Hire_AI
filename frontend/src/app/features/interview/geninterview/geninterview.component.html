@@ -1,0 +1,21 @@
+<div class="container">
+    <h1>Hi {{welcomeMessage}} 👋</h1>
+    <p>Which product are you interested in?</p>
+    <div class="products">
+        <div class="product">
+            <h2>Personalized Interview Trainer</h2>
+            <p>Enter specific job details and let the AI tailor responses to match the job requirements.</p>
+            <p>Get your customized answers for job screening questions and automatically submit applications for jobs that match your profile.</p>
+            <a href="#" class="button" (click)="openPersoModal(); $event.preventDefault()">Get Started</a>
+            <app-persodialog [isVisible]="showPersoModal" (close)="closePersoModal()"></app-persodialog>
+        </div>
+        <div class="product">
+            <h2>Generalized Interview Trainer</h2>
+            <p>AI-powered assistance to prepare you for any job interview.</p>
+            <p>Transcribe your interview and receive instant feedback and suggestions from ChatGPT AI to improve your responses in real-time.</p>
+            <a href="#" class="button" (click)="openGenModal(); $event.preventDefault()">Get Started</a>
+            <app-gendialog [isVisible]="showGenModal" (close)="closeGenModal()"></app-gendialog>
+        </div>
+    </div>
+  </div>
+  

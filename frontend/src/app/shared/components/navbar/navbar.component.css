@@ -1,0 +1,33 @@
+/* .slicknav_nav {
+    transition: all 0.3s ease-out;
+}
+
+.slicknav_nav.slicknav_hidden {
+    display: none;
+}
+
+.slicknav_nav.slicknav_open {
+    display: block;
+    max-height: 500px; 
+  opacity: 1;
+}
+.slicknav_nav {
+    max-height: none; 
+    overflow: visible; 
+  } */
+  .slicknav_nav {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:  0.3s ease-out 
+  }
+  
+  .slicknav_nav.slicknav_open {
+    max-height: 500px; 
+    opacity: 1;
+  }
+  
+  .slicknav_nav.slicknav_hidden {
+    max-height: 0;
+    opacity: 0;
+  }

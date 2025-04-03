@@ -1,0 +1,85 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-3xl font-extrabold mb-6 text-center text-violet-600">Interview Questions</h1>
+
+  
+
+  <div *ngIf="questions.length > 0" class="flex flex-col items-center">
+    <p class="text-xl font-bold text-gray-800 mb-6 p-4 bg-gray-100 rounded-lg shadow-md">{{ questions[currentQuestionIndex].question_text }}</p>
+
+    <!-- Video and Audio Section -->
+    <div class="video-audio-section">
+      <video #videoElement autoplay muted="muted" class="video-screen"></video>
+
+      <!-- Interviewer Overlay -->
+      <div class="interviewer-overlay">
+        <div *ngIf="questions[currentQuestionIndex].audio_url" class="audio-controls">
+          <div class="interviewer-container">
+            <img src="../../../../assets/interviewer/6.png" alt="Interviewer" class="interviewer-image">
+            <img 
+              src="../../../../assets/interviewer/microphone.png" 
+              alt="Microphone" 
+              class="microphone-image" 
+              (click)="toggleAudio()"
+              [class.playing]="isAudioPlaying"
+            >
+            <audio #audioElement (play)="isAudioPlaying = true" (pause)="isAudioPlaying = false" (ended)="isAudioPlaying = false">
+              <source [src]="questions[currentQuestionIndex].audio_url" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Audio Recording Section -->
+    <div class="audio-record ">
+      <button 
+        (click)="recording ? stopRecording() : startRecording()" 
+        [ngClass]="{'recording': recording}" 
+        class="mic-button"
+      >
+        <span class="icon" [ngClass]="{'icon-stop': recording, 'icon-mic': !recording}"></span>
+        <span class="text">{{ recording ? 'Stop Recording' : 'Start Recording' }}</span>
+      </button>
+      <!-- <audio class="audio-file" controls *ngIf="url">
+        <source [src]="sanitize(url)" type="audio/wav">
+      </audio> -->
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="flex justify-between mt-6 w-full max-w-md">
+      <button
+        (click)="previousQuestion()"
+        [disabled]="currentQuestionIndex === 0"
+        class="btn"
+      >
+        Previous
+      </button>
+      <button
+        (click)="nextQuestion()"
+        [disabled]="currentQuestionIndex === questions.length - 1"
+        class="btn"
+      >
+        Next
+      </button>
+    </div>
+
+    <!-- Analyze Interview Button -->
+    <button
+      *ngIf="currentQuestionIndex === questions.length - 1"
+      (click)="analyzeInterview()"
+      class="bg-green-600 text-white px-4 py-2 rounded mt-6"
+      [disabled]="isLoading"
+    >
+    {{ isLoading ? 'Analyzing...' : 'Analyze Interview' }}
+    </button>
+
+    <div *ngIf="analysisMessage" class="mt-4 text-center text-gray-700">
+      <p>{{ analysisMessage }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="questions.length === 0" class="text-center">
+    <p>No questions found for this session.</p>
+  </div>
+</div>

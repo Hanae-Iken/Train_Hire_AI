@@ -1,0 +1,121 @@
+pipeline {
+    agent any
+
+    environment {
+        // Configuration des variables d'environnement
+        PYTHON_VERSION = '3.9'
+
+    }
+
+    stages {
+        // stage('Setup') {
+        //     steps {
+        //         sh 'python3 -m venv myenv'
+        //         sh '. myenv/bin/activate' // sur linux : source venv/bin/activate , sur windows : .\myenv\Scripts\activate
+        //         sh 'python3 -m ensurepip --upgrade'
+        //         sh 'pip install --upgrade pip'
+        //         sh 'pip install -r requirements.txt'
+        //         sh 'pip install python-dotenv'  // Installer python-dotenv
+
+        //     }
+        // }
+
+        // stage('Checkout') {
+        //     steps {
+        //         // Récupérer la branche backend
+        //         git branch: 'backend', url: 'https://github.com/Hanae-Iken/Train_Hire_AI.git'
+        //     }
+        // }
+
+
+         stage('Setup') {
+            steps {
+                // Aller dans le dossier Backend
+                dir('Backend') {
+                sh '''
+                    python3 -m venv myenv
+                    . myenv/bin/activate
+                    pip install --upgrade pip
+                '''
+                }
+
+            }
+        }
+        stage('Install dependencies') {
+            steps {
+                // Aller dans le dossier Backend
+                dir('Backend') {
+                 // Affiche le répertoire courant pour vérifier où Jenkins travaille
+                    sh 'pwd'
+                    
+                    // Liste les fichiers dans le répertoire courant pour confirmer la présence de requirements.txt
+                    sh 'ls -la'
+                    
+                sh '''
+                    . myenv/bin/activate
+                    pip install -r requirements.txt
+                '''
+                }
+            }
+        }
+
+        stage('Load .env') {
+            steps {
+                sh '''
+                . myenv/bin/activate
+                python -m dotenv -f .env run echo "Environment variables loaded"
+                '''
+            }
+        }
+
+        stage('Lint') {
+            steps {
+                sh '. myenv/bin/activate'
+                sh 'flake8 .'
+            }
+        }
+
+        // stage('Test') {
+        //     steps {
+        //         sh 'source venv/bin/activate'
+        //         sh 'python manage.py test'
+        //     }
+        // }
+
+        stage('Build') {
+            steps {
+                sh '. myenv/bin/activate'
+                sh 'python manage.py collectstatic --noinput'
+            }
+        }
+
+        /*
+        stage('Deploy') {
+            steps {
+                script {
+                    if (env.BRANCH_NAME == 'main') {
+                        sh 'source venv/bin/activate'
+                        sh 'python manage.py migrate'
+                        sh 'docker build -t your_django_app .'
+                        sh 'docker tag your_django_app your_dockerhub_repo:latest'
+                        sh 'docker push your_dockerhub_repo:latest'
+                        sh 'kubectl apply -f k8s/deployment.yaml'
+                    }
+                }
+            }
+        }
+        */
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo 'Build and test successful!'
+        }
+        failure {
+            echo 'Build or test failed!'
+        }
+    }
+}
